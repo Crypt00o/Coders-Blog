@@ -23,7 +23,7 @@ app.use(helmet({contentSecurityPolicy:false}))
 
 //Logging Http Requests With My Customized MiddleWare
 
-if(process.env.NODE_ENV=dev){
+if(process.env.NODE_ENV='dev'){
 
 app.use(myCustomizedLogger)
 

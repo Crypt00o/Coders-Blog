@@ -11,8 +11,8 @@
     "start": "npm run build && nodemon build/app.js",
     "format": "prettier --write 'src/**/*.{ts,tsx,js,jsx}'",
     "lint": "eslint . --ext .ts",
-    "migrate:up":"db-migrate up",
-    "migrate:down":"db-migrate reset"
+    "migrate:up": "db-migrate up",
+    "migrate:down": "db-migrate reset"
   },
   "repository": {
     "type": "git",
@@ -41,7 +41,8 @@
     "jasmine-spec-reporter": "^7.0.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
-    "sequelize": "^6.21.4",
+    "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
     "supertest": "^6.2.4"
   },
   "devDependencies": {
@@ -52,7 +53,6 @@
     "@types/morgan": "^1.9.3",
     "@types/node": "^18.7.13",
     "@types/pg": "^8.6.5",
-    "@types/sequelize": "^4.28.14",
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.35.1",
     "@typescript-eslint/parser": "^5.35.1",
