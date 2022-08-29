@@ -1,0 +1,20 @@
+{
+    "defaultEnv":{ "ENV":"NODE_ENV"},
+    
+    "dev": {
+    "driver": "pg",
+    "host": { "ENV": "DB_HOST" },
+    "database": { "ENV": "DB_NAME" },
+    "user": { "ENV": "DB_USER" },
+    "password": { "ENV": "DB_PASSWORD" },
+    "port":{"ENV":"DB_PORT"}
+    },
+    "test": {
+        "driver": "pg",
+        "host": { "ENV": "DB_HOST" },
+        "database": { "ENV": "DB_TEST_NAME" },
+        "user": { "ENV": "DB_USER" },
+        "password": { "ENV": "DB_PASSWORD" },
+        "port":{"ENV":"DB_PORT"}
+    }
+}      
