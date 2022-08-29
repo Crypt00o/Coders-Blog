@@ -86,3 +86,4 @@ async login(user_name:string,password:string):Promise<boolean>{
 }
 
 }
+export {Users}
