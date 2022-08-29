@@ -1,11 +1,10 @@
 import express, { Application} from 'express'
-
 import * as dotenv from 'dotenv'
 import {myCustomizedLogger} from './middlewares/mylogger.middleware'
 import helmet from 'helmet'
 import router from './routes/index'
 import bodyParser from 'body-parser'
-
+import {client} from "./database"
 dotenv.config()
 
 const app: Application = express()
@@ -28,6 +27,23 @@ if(process.env.NODE_ENV='dev'){
 app.use(myCustomizedLogger)
 
 }
+//Testing Database Connection
+( async():Promise<void>=>{
+try{
+const connection = await client.connect()
+const sqlQuery='SELECT now();'
+const result=await connection.query(sqlQuery)
+connection.release()
+console.log(`[+] Connected Successfully : ${result.rows[0].now}`)
+
+}
+catch(err){
+  console.log(`[-] Connection Error : ${err}`)
+}
+} 
+)()
+
+//
 
 // Useing Routes And Api
 
