@@ -59,7 +59,8 @@ async update(user:User):Promise<User>{
 async delete(user_id:string):Promise<User>{
     try{
         const connection=await client.connect()
-        const sqlLine=`DELETE FROM users WHERE user_id=$1;`
+        
+        const sqlLine=`DELETE FROM articles WHERE user_id=$1 ;DELETE FROM users WHERE user_id=$1;`
         const result = await connection.query(sqlLine,[user_id])
         connection.release()
         return result.rows[0]
