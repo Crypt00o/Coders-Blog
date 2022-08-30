@@ -2,6 +2,9 @@ import  { Request, Response } from "express";
 import {User} from "../types/User"
 import {UsersModel} from "../models/users"
 import  validator  from "../utils/validator";
+import {generateToken} from "../utils/tokenizator"
+
+
 const userModel=new UsersModel()
 
 const index= async(req:Request,res:Response):Promise<void>=>{
@@ -103,7 +106,8 @@ const login= async(req:Request,res:Response):Promise<void>=>{
         if(userValidate.valid){
             const user_id=await userModel.login(req.body.username as string , req.body.password as string)
             if(user_id){
-                res.status(200).json({"Login":"Success","id":user_id})
+                res.status(200).json({"Login":"Success","id":user_id,"token":generateToken(user_id)})
+        
             }
             else{
                 res.status(401).json({"Login":"Failed"})
