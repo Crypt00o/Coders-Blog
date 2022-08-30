@@ -72,14 +72,23 @@ async delete(user_id:string):Promise<User>{
     }   
 }
 
-async login(user_name:string,password:string):Promise<boolean>{
+async login(user_name:string,password:string):Promise<string | false>{
     try{
         const connection=await client.connect()
         const sqlLine=`SELECT password FROM users WHERE user_name=$1;`
         const result = await connection.query(sqlLine,[user_name])
         connection.release()
 
-        return isValidPassword(password,result.rows[0]) 
+        if(isValidPassword(password,result.rows[0].password as string)){
+            const connection=await client.connect()
+            const sqlLine=`SELECT user_id FROM users WHERE user_name=$1;`
+            const result = await connection.query(sqlLine,[user_name])
+            connection.release()
+            return result.rows[0].user_id
+        } 
+        else{
+            return false;
+        }
     }
     catch(err){
         throw new Error(`[-] Error While Login For This User : ${err}`)

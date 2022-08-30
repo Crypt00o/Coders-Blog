@@ -99,10 +99,24 @@ const _delete= async(req:Request,res:Response):Promise<void>=>{
 }
 const login= async(req:Request,res:Response):Promise<void>=>{
     try{
-
+        const userValidate=validator.userLoginValidator(req.body.username as string , req.body.password as string )
+        if(userValidate.valid){
+            const user_id=await userModel.login(req.body.username as string , req.body.password as string)
+            if(user_id){
+                res.status(200).json({"Login":"Success","id":user_id})
+            }
+            else{
+                res.status(401).json({"Login":"Failed"})
+            }
+        }
+        else{
+            res.status(400).json({"Error":userValidate})
+        }
+        
     }
     catch(err){
-        
+        res.status(401).json({"Login":" Failed , Error While Login"})
+        console.log(err)
     }
 }
 export{index,show,create,update,_delete,login}
