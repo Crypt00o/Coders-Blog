@@ -1,7 +1,7 @@
 import {client} from "../database"
 import {User} from "../types/User"
 import {hashingPassword,isValidPassword} from "../utils/hashing"
-class Users{
+class UsersModel{
    async index():Promise<Array<User>>{
     try{
      const connection=await client.connect()
@@ -60,8 +60,10 @@ async delete(user_id:string):Promise<User>{
     try{
         const connection=await client.connect()
         
-        const sqlLine=`DELETE FROM articles WHERE user_id=$1 ;DELETE FROM users WHERE user_id=$1;`
+        const deleteArticlesBelongsToUser=`DELETE FROM articles WHERE user_id=$1 ;`,sqlLine=`DELETE FROM users WHERE user_id=$1 RETURNING user_id , user_name , email , first_name , last_name;`
+        await connection.query(deleteArticlesBelongsToUser,[user_id])
         const result = await connection.query(sqlLine,[user_id])
+
         connection.release()
         return result.rows[0]
     }
@@ -86,4 +88,4 @@ async login(user_name:string,password:string):Promise<boolean>{
 }
 
 }
-export {Users}
+export {UsersModel}
