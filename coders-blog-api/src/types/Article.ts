@@ -4,12 +4,12 @@ type Article = {
     article_title:string,
     article_body:string,
     creation_date?:string,
+    lastupdate_date?:string
 }
 type ArticleValidate ={
 user_id?:string,
 article_title?:string,
 article_body?:string,
-creation_date?:string,
 valid:boolean
 }
 export {Article,ArticleValidate}

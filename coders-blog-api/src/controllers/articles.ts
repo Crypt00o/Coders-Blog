@@ -43,7 +43,7 @@ const show=async(req:Request,res:Response):Promise<void>=>{
 }
 const create=async(req:Request,res:Response):Promise<void>=>{
     try{
-        const newArticle:Article={user_id:req.params.user_id as string, article_title:req.body.title as string , article_body:req.body.article as string }
+        const newArticle:Article={user_id:req.params.user_id as string, article_title:req.body.title as string , article_body:req.body.article as string,creation_date:(new Date().toISOString().slice(0, 10)) }
         
         const articleValidate=validator.articleValidator(newArticle)
         if(articleValidate.valid){
@@ -62,7 +62,7 @@ const create=async(req:Request,res:Response):Promise<void>=>{
 const update=async(req:Request,res:Response):Promise<void>=>{
     try{
         if(validator.uuid_v4_Validator(req.params.article_id)){
-            const updateArticle:Article={user_id:req.params.user_id as string,article_id:req.params.article_id, article_title:req.body.title as string , article_body:req.body.article as string }
+            const updateArticle:Article={user_id:req.params.user_id as string,article_id:req.params.article_id, article_title:req.body.title as string , article_body:req.body.article as string, lastupdate_date:(new Date().toISOString().slice(0, 10)) }
             const articleValidate=validator.articleValidator(updateArticle)
             if(articleValidate.valid){
                 const updatedArticle=await articleModel.update(updateArticle)

@@ -59,8 +59,8 @@ class ArticlesModel{
         try{
          const connection=await client.connect()
          article.creation_date=new Date().toISOString().slice(0, 10);
-         const sqlLine=`UPDATE articles SET article_title=($3),article_body=($4),createtion_date=($5) WHERE article_id=$1 AND user_id=$2 RETURNING * ;`
-         const result=await connection.query(sqlLine,[article.article_id,article.user_id, article.article_title,article.article_body,article.creation_date])
+         const sqlLine=`UPDATE articles SET article_title=($3),article_body=($4),lastupdate_date=($5) WHERE article_id=$1 AND user_id=$2 RETURNING * ;`
+         const result=await connection.query(sqlLine,[article.article_id,article.user_id, article.article_title,article.article_body,article.lastupdate_date])
          connection.release()
          return result.rows[0]
         }
@@ -73,7 +73,7 @@ class ArticlesModel{
     async delete(article_id:string,user_id:string):Promise<Article>{
         try{
             const connection=await client.connect()
-            const sqlLine=`DELETE FROM articles WHERE article_id=$1 AND user_id=$2;`
+            const sqlLine=`DELETE FROM articles WHERE article_id=$1 AND user_id=$2 RETURNING article_id;`
             const result=await connection.query(sqlLine,[article_id,user_id])
             connection.release()
             return result.rows[0]
