@@ -3,6 +3,13 @@ type Article = {
     user_id:string,
     article_title:string,
     article_body:string,
-    creation_date:string,
+    creation_date?:string,
 }
-export {Article}
+type ArticleValidate ={
+user_id?:string,
+article_title?:string,
+article_body?:string,
+creation_date?:string,
+valid:boolean
+}
+export {Article,ArticleValidate}

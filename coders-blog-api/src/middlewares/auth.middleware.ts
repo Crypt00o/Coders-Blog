@@ -12,7 +12,7 @@ const notAuthenticated = (req: Request, res: Response): void => {
         const bearerRegexp = /Bearer/
         const bearerHeader = authenticateHeader.split(' ')[0]
         if (authenticateToken && bearerRegexp.test(bearerHeader)) {
-          if (checkToken_id(authenticateToken,req.params.id as string)||checkToken_id(authenticateToken,req.body.id as string) ) {
+          if (checkToken_id(authenticateToken,req.params.user_id as string) ) {
             next()
           } else {
             notAuthenticated(req, res)
@@ -36,7 +36,7 @@ const notAuthenticated = (req: Request, res: Response): void => {
         const bearerRegexp = /Bearer/
         const bearerHeader = authenticateHeader.split(' ')[0]
         if (authenticateToken && bearerRegexp.test(bearerHeader)) {
-          if (checkToken(authenticateToken )||checkToken(authenticateToken) ) {
+          if (checkToken(authenticateToken ) ) {
             next()
           } else {
             notAuthenticated(req, res)

@@ -1,7 +1,8 @@
 import express, { Router } from 'express'
 import { welcomeMessage, notFound } from '../controllers/main.controller'
 import {join} from 'path'
-import { usesrRouter } from './api/users/user'
+import { usersRouter } from './api/users/user'
+import { articlesRouter } from './api/articles/articles'
 //Declareing Static Directory for Serving Static Files 
 
 const staticDir:string=join(__dirname,'..','..','static')
@@ -19,9 +20,10 @@ router.use('/static',express.static(staticDir))
 router.get('/', welcomeMessage)
 
 // Useing User Router With /users/ Endpoint
-router.use('/users', usesrRouter)
+router.use('/users', usersRouter)
 
 // Response With Not Found for any invalid path
+router.use("/articles",articlesRouter)
 
 router.all('/*', notFound)
 

@@ -1,9 +1,8 @@
 import { Router } from "express";
 import { authenticateing,authenticateingByTokenId } from "../../../middlewares/auth.middleware";
-import {index,show,create,update,_delete,login} from "../../../controllers/users"
-
-const usesrRouter = Router()
-usesrRouter.route("/").get(authenticateing, index).post(create)
-usesrRouter.route("/:id").get(authenticateingByTokenId , show).patch(authenticateingByTokenId , update).delete(authenticateingByTokenId , _delete)
-usesrRouter.route("/login").post(login)
-export {usesrRouter}
+import userController from "../../../controllers/users"
+const usersRouter = Router()
+usersRouter.route("/").get(authenticateing, userController.index).post(userController.create)
+usersRouter.route("/:user_id").get(authenticateingByTokenId , userController.show).patch(authenticateingByTokenId , userController.update).delete(authenticateingByTokenId , userController._delete)
+usersRouter.route("/login").post(userController.login)
+export {usersRouter}

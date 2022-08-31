@@ -23,8 +23,8 @@ const index= async(req:Request,res:Response):Promise<void>=>{
 }
 const show= async(req:Request,res:Response):Promise<void>=>{
     try{
-        if(validator.uuid_v4_Validator(req.params.id)){
-            const user:User=await userModel.show(req.params.id as string)
+        if(validator.uuid_v4_Validator(req.params.user_id)){
+            const user:User=await userModel.show(req.params.user_id as string)
             if(user.user_id){
                 res.status(200).json({"Coders Blog - User":user})     
             }
@@ -53,13 +53,13 @@ const create= async(req:Request,res:Response):Promise<void>=>{
         }
     }
     catch(err){
-        res.status(400).json({"Error":"Can,t Update User , May Email Or Username Used Before Or UserId Not Found :("})
+        res.status(400).json({"Error":"Can,t Create User , May Email Or Username Used Before  :("})
     }
 }
 const update= async(req:Request,res:Response):Promise<void>=>{
     try{
-        if(validator.uuid_v4_Validator(req.params.id)){
-            const updateUser:User={user_id:req.params.id as string,user_name:req.body.username as string, email:req.body.email as string ,password:req.body.password as string ,first_name:req.body.firstname as string,last_name:req.body.lastname  as string   }
+        if(validator.uuid_v4_Validator(req.params.user_id)){
+            const updateUser:User={user_id:req.params.user_id as string,user_name:req.body.username as string, email:req.body.email as string ,password:req.body.password as string ,first_name:req.body.firstname as string,last_name:req.body.lastname  as string   }
             const userValidate=validator.userValidator(updateUser)
             if(userValidate.valid){
                 const updatedUser=await userModel.update(updateUser)
@@ -82,8 +82,8 @@ const update= async(req:Request,res:Response):Promise<void>=>{
 
 const _delete= async(req:Request,res:Response):Promise<void>=>{
     try{
-        if(validator.uuid_v4_Validator(req.params.id)){
-            const deletedUser:User=await userModel.delete(req.params.id as string)
+        if(validator.uuid_v4_Validator(req.params.user_id)){
+            const deletedUser:User=await userModel.delete(req.params.user_id as string)
             if(deletedUser.user_id){
                 res.status(200).json({"User Deleted":deletedUser.user_id})     
             }
@@ -120,7 +120,7 @@ const login= async(req:Request,res:Response):Promise<void>=>{
     }
     catch(err){
         res.status(401).json({"Login":" Failed , Error While Login"})
-        console.log(err)
+        
     }
 }
-export{index,show,create,update,_delete,login}
+export default {index,show,create,update,_delete,login}

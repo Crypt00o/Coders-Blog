@@ -1,7 +1,7 @@
 import {client} from "../database"
 import {Article} from "../types/Article"
 
-class Articles{
+class ArticlesModel{
     async index():Promise<Array<Article>>{
         try{
           const connection=await client.connect()
@@ -15,11 +15,11 @@ class Articles{
         }
     }
 
-    async show(article_id:string):Promise<Article>{
+    async show(article_id:string,user_id:string):Promise<Article>{
         try{
         const connection=await client.connect()
-        const sqlLine=`SELECT * FROM articles WHERE article_id=$1;`
-        const result=await connection.query(sqlLine,[article_id])
+        const sqlLine=`SELECT * FROM articles WHERE article_id=$1 AND user_id=$2;`
+        const result=await connection.query(sqlLine,[article_id,user_id])
         connection.release()
         return result.rows[0]
         }
@@ -28,7 +28,7 @@ class Articles{
         }
     }
 
-    async showUserArticles(user_id:string):Promise<Article[]>{
+    async showArticlesByUserId(user_id:string):Promise<Article[]>{
         try{
         const connection=await client.connect()
         const sqlLine=`SELECT * FROM articles WHERE user_id=$1;`
@@ -70,11 +70,11 @@ class Articles{
 
     }
 
-    async delete(article_id:string):Promise<Article>{
+    async delete(article_id:string,user_id:string):Promise<Article>{
         try{
             const connection=await client.connect()
-            const sqlLine=`DELETE FROM articles WHERE article_id=$1;`
-            const result=await connection.query(sqlLine,[article_id])
+            const sqlLine=`DELETE FROM articles WHERE article_id=$1 AND user_id=$2;`
+            const result=await connection.query(sqlLine,[article_id,user_id])
             connection.release()
             return result.rows[0]
         }
@@ -86,4 +86,4 @@ class Articles{
 
 }
 
-export {Articles}
+export {ArticlesModel}

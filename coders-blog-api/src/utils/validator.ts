@@ -1,5 +1,5 @@
-import {User} from "../types/User"
-import { UserValidate } from "../types/User"
+import {User,UserValidate} from "../types/User"
+import {Article,ArticleValidate } from "../types/Article"
 const uuid_v4_Validator= (uuid_v4?:string):boolean=>{
  const uuid_v4_Regex=/^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i
     return uuid_v4_Regex.test(uuid_v4 as string)
@@ -54,6 +54,24 @@ const userLoginValidator=(username:string,password:string):UserValidate=>{
 return userValidate
 }
 
+const articleValidator=(article:Article):ArticleValidate=>{
+    const articleValidate:ArticleValidate={valid:true}
+if(!article.article_title||  article.article_title.length < 5 || article.article_title.length > 255 ){
+articleValidate.article_title="Not Valid Title , Please Enter An Article Title Between 5 and 255 Letters Length",
+articleValidate.valid=false
+}
 
+if(!article.article_body|| article.article_body.length < 1 || article.article_body.length > 5000){
+    article.article_body="Not Valid Body , Please Enter An Article Body Between 1 and 5000 Letters Length"
+    articleValidate.valid=false
+}
 
-export default {uuid_v4_Validator,userValidator,userLoginValidator }
+if(!article.user_id || !uuid_v4_Validator(article.user_id)){
+ article.user_id="Not Valid User Id"
+ articleValidate.valid=false
+}
+return articleValidate
+
+}
+
+export default {uuid_v4_Validator,userValidator,userLoginValidator,articleValidator }
