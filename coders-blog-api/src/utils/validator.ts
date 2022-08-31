@@ -62,7 +62,7 @@ articleValidate.valid=false
 }
 
 if(!article.article_body|| article.article_body.length < 1 || article.article_body.length > 5000){
-    article.article_body="Not Valid Body , Please Enter An Article Body Between 1 and 5000 Letters Length"
+    articleValidate.article_body="Not Valid Body , Please Enter An Article Body Between 1 and 5000 Letters Length"
     articleValidate.valid=false
 }
 
