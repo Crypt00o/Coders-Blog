@@ -5,6 +5,6 @@ CREATE TABLE articles(
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     article_title VARCHAR(128) NOT NULL,
     article_body text NOT NULL,
-    createtion_date date NOT NULL,
-    lastupdate_date date
+    createtion_date date NOT NULL DEFAULT now(),
+    lastupdate_date date DEFAULT null
 );

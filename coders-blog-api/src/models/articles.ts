@@ -45,8 +45,8 @@ class ArticlesModel{
         try{
         const connection= await client.connect()
         article.creation_date=new Date().toISOString().slice(0, 10);
-        const sqlLine=`INSERT INTO articles(user_id,article_title,article_body,createtion_date) VALUES($1,$2,$3,$4) RETURNING * ;`
-        const result= await connection.query(sqlLine,[article.user_id,article.article_title,article.article_body,article.creation_date])
+        const sqlLine=`INSERT INTO articles(user_id,article_title,article_body) VALUES($1,$2,$3,$4) RETURNING * ;`
+        const result= await connection.query(sqlLine,[article.user_id,article.article_title,article.article_body,article.lastupdate_date])
         connection.release()
         return result.rows[0]
         }
@@ -59,8 +59,8 @@ class ArticlesModel{
         try{
          const connection=await client.connect()
          article.creation_date=new Date().toISOString().slice(0, 10);
-         const sqlLine=`UPDATE articles SET article_title=($3),article_body=($4),lastupdate_date=($5) WHERE article_id=$1 AND user_id=$2 RETURNING * ;`
-         const result=await connection.query(sqlLine,[article.article_id,article.user_id, article.article_title,article.article_body,article.lastupdate_date])
+         const sqlLine=`UPDATE articles SET article_title=($3),article_body=($4),lastupdate_date=now() WHERE article_id=$1 AND user_id=$2 RETURNING *  ;`
+         const result=await connection.query(sqlLine,[article.article_id,article.user_id, article.article_title,article.article_body])
          connection.release()
          return result.rows[0]
         }

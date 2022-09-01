@@ -4,7 +4,7 @@ type Article = {
     article_title:string,
     article_body:string,
     creation_date?:string,
-    lastupdate_date?:string
+    lastupdate_date?:string|null;
 }
 type ArticleValidate ={
 user_id?:string,
