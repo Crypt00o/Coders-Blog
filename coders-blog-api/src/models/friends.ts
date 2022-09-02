@@ -100,7 +100,7 @@ catch(err){
         connection.release()
         return {
             Error:true ,
-            Message:"Can,t Accept FriendShip Request, Already Friends"
+            Message:"Can,t Accept FriendShip Request ,  Invaild ID"
         }
     }
     
@@ -150,7 +150,7 @@ catch(err){
         connection.release()
         return {
             Error:true ,
-            Message:"Can,t Send FriendShip Request, Already Friends"
+            Message:"Can,t refuse FriendShip Request , Invaild ID"
         }
     }
     
@@ -201,7 +201,7 @@ catch(err){
         connection.release()
         return {
             Error:true ,
-            Message:"Can,t Send FriendShip Request, Already Friends"
+            Message:"Can,t Delete FriendShip,  Invaild ID"
         }
     }
     
