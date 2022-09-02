@@ -1,21 +1,21 @@
 import {client} from "../database"
 import { PoolClient } from "pg"
-import { Friend ,FriendShipResult} from "../types/Friend"
+import { FriendShip ,FriendShipResult,Friend} from "../types/Friend"
 
 class FriendsModel {
 
     
-    async friendShipValidator(connection:PoolClient,friend:Friend):Promise<number>{
+    async friendShipValidator(connection:PoolClient,friend:FriendShip):Promise<number>{
     try{
      const result=((await connection.query(`SELECT COUNT(friend1_id,friend2_id) AS friendship_validate FROM friends WHERE friend1_id IN($1,$2) AND friend2_id IN($1,$2) ;`,[friend.friend1_id,friend.friend2_id])).rows[0])
      return result.rows[0].friendship_validate as number;
      }
    catch(err){
-    throw new Error ('[-] Error : Can,t Fetch FriendShip ')
+    throw new Error (`[-] Error : Can,t Fetch FriendShip : ${err}`)
     }
  }
 
- async create(friend:Friend):Promise<FriendShipResult>{
+ async create(friend:FriendShip):Promise<FriendShipResult>{
     try{
     const connection= await client.connect();
     const validateResult=await this.friendShipValidator(connection,friend)
@@ -56,13 +56,13 @@ class FriendsModel {
 }
 
 catch(err){
-        throw new Error("[-] Error While Creating FriendShip ")
+        throw new Error(`[-] Error While Creating FriendShip : ${err}`)
     }
 
  }
 
 
- async accept(friend:Friend):Promise<FriendShipResult>{
+ async accept(friend:FriendShip):Promise<FriendShipResult>{
     try{
     const connection= await client.connect();
     const validateResult=await this.friendShipValidator(connection,friend)
@@ -107,13 +107,13 @@ catch(err){
 }
 
 catch(err){
-        throw new Error("[-] Error While Accepting FriendShip ")
+        throw new Error(`[-] Error While Accepting FriendShip : ${err}`)
     }
 
  }
 
 
- async refuse(friend:Friend):Promise<FriendShipResult>{
+ async refuse(friend:FriendShip):Promise<FriendShipResult>{
     try{
     const connection= await client.connect();
     const validateResult=await this.friendShipValidator(connection,friend)
@@ -157,12 +157,12 @@ catch(err){
 }
 
 catch(err){
-        throw new Error("[-] Error While Refuseing FriendShip ")
+        throw new Error(`[-] Error While Refuseing FriendShip : ${err}` )
     }
 
  }
 
- async delete(friend:Friend):Promise<FriendShipResult>{
+ async delete(friend:FriendShip):Promise<FriendShipResult>{
     try{
     const connection= await client.connect();
     const validateResult=await this.friendShipValidator(connection,friend)
@@ -208,13 +208,59 @@ catch(err){
 }
 
 catch(err){
-        throw new Error("[-] Error While Refuseing FriendShip ")
+        throw new Error(`[-] Error While Delete Friend : ${err}`)
     }
 
  }
 
+ async getFriends(friend1_id:string):Promise<Friend[]>{
+    
+    try{
+        const connection=await client.connect()
+        const sqlLine=`SELECT friend2_id AS user_id FROM friends WHERE friendship_status=TRUE AND friend1_id=$1; `
+        const result=await connection.query(sqlLine,[friend1_id])
+        connection.release()
+        return result.rows
+
+    }
+    catch(err){
+throw new Error(`[-] Error While fetching Friends : ${err} `)
+    }
+}
+
+async getRecievedRequests(friend2_id:string):Promise<Friend[]>{
+    
+    try{
+        const connection=await client.connect()
+        const sqlLine=`SELECT friend1_id AS user_id FROM friends WHERE friendship_status=FALSE AND friend2_id=$1; `
+        const result=await connection.query(sqlLine,[friend2_id])
+        connection.release()
+        return result.rows
+
+    }
+    catch(err){
+throw new Error(`[-] Error While fetching Recieved Requests : ${err} `)
+    }
+}
+ 
 
 
+async getSendedRequests(friend1_id:string):Promise<Friend[]>{
+    
+    try{
+        const connection=await client.connect()
+        const sqlLine=`SELECT friend2_id AS user_id FROM friends WHERE friendship_status=FALSE AND friend1_id=$1; `
+        const result=await connection.query(sqlLine,[friend1_id])
+        connection.release()
+        return result.rows
+
+    }
+    catch(err){
+throw new Error(`[-] Error While fetching Sended Requests : ${err} `)
+    }
+}
 
  
 }
+
+export {FriendsModel}

@@ -1,4 +1,4 @@
-type Friend={
+type FriendShip={
 friend1_id:string,
 friend2_id:string,
 friendship_status?:boolean,
@@ -9,5 +9,8 @@ type FriendShipResult={
     Error?:boolean
     Message:string
 }
+type Friend={
+user_id?:string
+}
 
-export {Friend,FriendShipResult}
+export {FriendShip,FriendShipResult,Friend}
