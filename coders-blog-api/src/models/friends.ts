@@ -7,8 +7,8 @@ class FriendsModel {
     
     async friendShipValidator(connection:PoolClient,friend:FriendShip):Promise<number>{
     try{
-     const result=((await connection.query(`SELECT COUNT(friend1_id,friend2_id) AS friendship_validate FROM friends WHERE friend1_id IN($1,$2) AND friend2_id IN($1,$2) ;`,[friend.friend1_id,friend.friend2_id])).rows[0])
-     return result.rows[0].friendship_validate as number;
+     const result=((await connection.query(`SELECT COUNT(*) AS friendship_validate FROM friends WHERE friend1_id IN($1,$2) AND friend2_id IN($1,$2) ;`,[friend.friend1_id,friend.friend2_id])).rows[0])
+     return result.friendship_validate as number;
      }
    catch(err){
     throw new Error (`[-] Error : Can,t Fetch FriendShip : ${err}`)
