@@ -213,15 +213,32 @@ catch(err){
 
  }
 
+
+ async userValidator(connection :PoolClient,user_id:string):Promise<boolean>{
+
+    const checkUserAvailability=(await connection.query(`SELECT COUNT(user_id) AS user_validate FROM users WHERE user_id=$1;`,[user_id])).rows[0]
+
+if(checkUserAvailability.user_validate as number==0){
+    return false;
+}
+else{
+    return true;
+}
+}
+
  async getFriends(friend1_id:string):Promise<Friend[]>{
     
     try{
         const connection=await client.connect()
+        if(await this.userValidator(connection,friend1_id)){
         const sqlLine=`SELECT friend2_id AS user_id FROM friends WHERE friendship_status=TRUE AND friend1_id=$1; `
         const result=await connection.query(sqlLine,[friend1_id])
         connection.release()
         return result.rows
-
+        }
+        else{
+            throw new Error("[-] Error : User not found")
+        }
     }
     catch(err){
 throw new Error(`[-] Error While fetching Friends : ${err} `)
@@ -232,10 +249,15 @@ async getRecievedRequests(friend2_id:string):Promise<Friend[]>{
     
     try{
         const connection=await client.connect()
+        if(await this.userValidator(connection,friend2_id)){
         const sqlLine=`SELECT friend1_id AS user_id FROM friends WHERE friendship_status=FALSE AND friend2_id=$1; `
         const result=await connection.query(sqlLine,[friend2_id])
         connection.release()
         return result.rows
+        }
+        else{
+            throw new Error("[-] Error : User not found") 
+        }
 
     }
     catch(err){
@@ -249,11 +271,15 @@ async getSendedRequests(friend1_id:string):Promise<Friend[]>{
     
     try{
         const connection=await client.connect()
+        if(await this.userValidator(connection,friend1_id)){
         const sqlLine=`SELECT friend2_id AS user_id FROM friends WHERE friendship_status=FALSE AND friend1_id=$1; `
         const result=await connection.query(sqlLine,[friend1_id])
         connection.release()
         return result.rows
-
+        }
+        else{
+            throw new Error("[-] Error : User not found") 
+        }
     }
     catch(err){
 throw new Error(`[-] Error While fetching Sended Requests : ${err} `)
