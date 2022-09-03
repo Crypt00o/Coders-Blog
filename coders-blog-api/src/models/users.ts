@@ -2,11 +2,11 @@ import {client} from "../database"
 import {User} from "../types/User"
 import {hashingPassword,isValidPassword} from "../utils/hashing"
 class UsersModel{
-   async index():Promise<Array<User>>{
+   async index(totalUsersFetch:number,indexOffset:number):Promise<Array<User>>{
     try{
      const connection=await client.connect()
-     const sqlLine=`SELECT user_id,first_name,last_name FROM users;`
-     const result = await connection.query(sqlLine)
+     const sqlLine=`SELECT user_id,first_name,last_name FROM users ORDER BY join_date ASC LIMIT $1 OFFSET $2;`
+     const result = await connection.query(sqlLine,[totalUsersFetch,indexOffset])
      connection.release()
      return result.rows
     }

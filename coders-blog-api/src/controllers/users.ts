@@ -6,10 +6,13 @@ import {generateToken} from "../utils/tokenizator"
 
 
 const userModel=new UsersModel()
+const totalUsersFetch=30
 
 const index= async(req:Request,res:Response):Promise<void>=>{
     try{
-        const users:Array<User>= await userModel.index()
+        const offset=parseInt(req.query.offset as string) as number
+
+        const users:Array<User>= await userModel.index(totalUsersFetch,validator.offsetValidator(offset))
         if(users.length===0){
             res.status(200).json({"Coders Blog - Users":"We Don,t Have Users Untill Now :("})
         }
