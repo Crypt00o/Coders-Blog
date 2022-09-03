@@ -73,6 +73,21 @@ async delete(user_id:string):Promise<User>{
     }   
 }
 
+async generalInfo(user_id:string):Promise<User>{
+
+    try{
+        const connection=await client.connect()
+        const sqlLine=`SELECT user_i,first_name,last_name FROM users WHERE user_id=$1;`
+        const result = await connection.query(sqlLine,[user_id])
+        connection.release()
+        return result.rows[0]
+    }
+    catch(err){
+    throw new Error(`[-] Error While Getting User Info : ${err}`)
+    }
+    }
+
+    
 async login(user_name:string,password:string):Promise<string | false>{
     try{
         const connection=await client.connect()
