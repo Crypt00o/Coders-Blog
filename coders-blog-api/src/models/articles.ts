@@ -45,8 +45,8 @@ class ArticlesModel{
         try{
         const connection= await client.connect()
         article.creation_date=new Date().toISOString().slice(0, 10);
-        const sqlLine=`INSERT INTO articles(user_id,article_title,article_body) VALUES($1,$2,$3,$4) RETURNING * ;`
-        const result= await connection.query(sqlLine,[article.user_id,article.article_title,article.article_body,article.lastupdate_date])
+        const sqlLine=`INSERT INTO articles(user_id,article_title,article_body) VALUES($1,$2,$3) RETURNING * ;`
+        const result= await connection.query(sqlLine,[article.user_id,article.article_title,article.article_body])
         connection.release()
         return result.rows[0]
         }

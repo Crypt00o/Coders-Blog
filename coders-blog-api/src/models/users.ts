@@ -19,7 +19,7 @@ async show(user_id:string):Promise<User>{
 
 try{
     const connection=await client.connect()
-    const sqlLine=`SELECT user_id,user_name,email,first_name,last_name FROM users WHERE user_id=$1;`
+    const sqlLine=`SELECT user_id,user_name,email,first_name,last_name,join_date FROM users WHERE user_id=$1;`
     const result = await connection.query(sqlLine,[user_id])
     connection.release()
     return result.rows[0]
@@ -32,7 +32,7 @@ throw new Error(`[-] Error While show User : ${err}`)
 async create(user:User):Promise<User>{
     try{
       const connection=await client.connect()
-      const sqlLine= ` INSERT INTO users(user_name,email,password,first_name,last_name) VALUES($1,$2,$3,$4,$5) RETURNING user_id,user_name,email,first_name,last_name;`
+      const sqlLine= ` INSERT INTO users(user_name,email,password,first_name,last_name) VALUES($1,$2,$3,$4,$5) RETURNING user_id,user_name,email,first_name,last_name,join_date;`
       const result=await connection.query(sqlLine,[user.user_name,user.email,hashingPassword(user.password as string),user.first_name,user.last_name])
       connection.release()
       return result.rows[0]
