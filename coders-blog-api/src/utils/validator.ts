@@ -74,4 +74,13 @@ return articleValidate
 
 }
 
-export default {uuid_v4_Validator,userValidator,userLoginValidator,articleValidator }
+const offsetValidator=(offset:number):number=>{
+    if (typeof offset == 'number' && offset < 10000000000000000){
+        return offset;
+    }
+    else{
+        return 0;
+    }
+}
+
+export default {uuid_v4_Validator,userValidator,userLoginValidator,articleValidator,offsetValidator }

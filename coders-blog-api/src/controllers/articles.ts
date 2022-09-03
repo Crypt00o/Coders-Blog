@@ -5,10 +5,12 @@ import { Request,Response } from "express";
 
 
 const articleModel= new ArticlesModel()
+const totalArticlesFetch=10
 
 const index=async(req:Request,res:Response):Promise<void>=>{
     try{
-        const articles:Array<Article>=await articleModel.index()
+        const offset=parseInt(req.query.offset as string) as number
+        const articles:Array<Article>=await articleModel.index(totalArticlesFetch,validator.offsetValidator(offset))
         if(articles.length===0){
             res.status(200).json({"Coders Blog - Articles":"We Don,t Have Articles Untill Now :("})
         }
@@ -106,7 +108,8 @@ const showArticlesByUserId=async(req:Request,res:Response):Promise<void>=>{
     try{
         
         if(validator.uuid_v4_Validator(req.params.user_id as string)){
-        const articles:Array<Article>=await articleModel.showArticlesByUserId(req.params.user_id)
+            const offset=parseInt(req.query.offset as string) as number
+            const articles:Array<Article>=await articleModel.showArticlesByUserId(req.params.user_id,totalArticlesFetch,validator.offsetValidator(offset))
         if(articles.length===0){
             res.status(200).json({"Coders Blog - Articles":"This User Doesn,t Have Articles Untill Now :("})
         }

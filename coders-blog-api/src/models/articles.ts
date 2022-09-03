@@ -2,11 +2,11 @@ import {client} from "../database"
 import {Article} from "../types/Article"
 
 class ArticlesModel{
-    async index():Promise<Array<Article>>{
+    async index(totalArticles:number,indexOffset:number):Promise<Array<Article>>{
         try{
           const connection=await client.connect()
-          const sqlLine=`SELECT * FROM articles;`
-          const result=await connection.query(sqlLine)
+          const sqlLine=`SELECT * FROM articles  ORDER BY createtion_date ASC LIMIT $1 OFFSET $2  ;`
+          const result=await connection.query(sqlLine,[totalArticles,indexOffset])
           connection.release()
           return result.rows
         }
@@ -28,11 +28,11 @@ class ArticlesModel{
         }
     }
 
-    async showArticlesByUserId(user_id:string):Promise<Article[]>{
+    async showArticlesByUserId(user_id:string,totalArticles:number,indexOffset:number):Promise<Article[]>{
         try{
         const connection=await client.connect()
-        const sqlLine=`SELECT * FROM articles WHERE user_id=$1;`
-        const result=await connection.query(sqlLine,[user_id])
+        const sqlLine=`SELECT * FROM articles WHERE user_id=$1 ORDER BY createtion_date ASC LIMIT $2 OFFSET $3 ;`
+        const result=await connection.query(sqlLine,[user_id,totalArticles,indexOffset])
         connection.release()
         return result.rows
         }
