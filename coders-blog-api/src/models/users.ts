@@ -5,7 +5,7 @@ class UsersModel{
    async index():Promise<Array<User>>{
     try{
      const connection=await client.connect()
-     const sqlLine=`SELECT user_id,user_name,first_name,last_name FROM users;`
+     const sqlLine=`SELECT user_id,first_name,last_name FROM users;`
      const result = await connection.query(sqlLine)
      connection.release()
      return result.rows
