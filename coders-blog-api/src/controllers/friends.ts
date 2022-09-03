@@ -8,41 +8,97 @@ const friendmodel=new FriendsModel();
 
 
 const create=async(req:Request,res:Response):Promise<void>=>{
+    
     try{
+    
+        if(validator.uuid_v4_Validator(req.params.user_id) &&validator.uuid_v4_Validator(req.params.friend_id) ){
+            const friendship:FriendShip={friend1_id:req.params.user_id,friend2_id:req.params.friend_id}
+            const friendShipResult:FriendShipResult=await friendmodel.create(friendship)
+            if(friendShipResult.Error){
+                res.status(400).json(friendShipResult)
+            }
+            else{
+                res.status(200).json(friendShipResult)
+            }
+        }
+    
+        else{
+            res.status(400).json({"Error": "This is Not Valid User ID Or Friend ID"})
+        }
 
     }
+    
     catch(err){
-
+        res.status(400).json({"Error": "This is Not Valid User ID Or Friend ID"})
     }
 }
 
 
 const accept=async(req:Request,res:Response):Promise<void>=>{
     try{
+        if(validator.uuid_v4_Validator(req.params.user_id) &&validator.uuid_v4_Validator(req.params.friend_id) ){
+            const friendship:FriendShip={friend1_id:req.params.user_id,friend2_id:req.params.friend_id}
+            const friendShipResult:FriendShipResult=await friendmodel.accept(friendship)
+            if(friendShipResult.Error){
+                res.status(400).json(friendShipResult)
+            }
+            else{
+                res.status(200).json(friendShipResult)
+            }
+        }
+        else{
+            res.status(400).json({"Error": "This is Not Valid User ID Or Friend ID"})
+        }
 
     }
     catch(err){
-
+        res.status(400).json({"Error": "This is Not Valid User ID Or Friend ID"})
     }
 }
 
 
 const refuse=async(req:Request,res:Response):Promise<void>=>{
     try{
+        if(validator.uuid_v4_Validator(req.params.user_id) &&validator.uuid_v4_Validator(req.params.friend_id) ){
+            const friendship:FriendShip={friend1_id:req.params.user_id,friend2_id:req.params.friend_id}
+            const friendShipResult:FriendShipResult=await friendmodel.refuse(friendship)
+            if(friendShipResult.Error){
+                res.status(400).json(friendShipResult)
+            }
+            else{
+                res.status(200).json(friendShipResult)
+            }
+        }
+        else{
+            res.status(400).json({"Error": "This is Not Valid User ID Or Friend ID"})
+        }
 
     }
     catch(err){
-
+        res.status(400).json({"Error": "This is Not Valid User ID Or Friend ID"})
     }
 }
 
 
 const _delete=async(req:Request,res:Response):Promise<void>=>{
     try{
+        if(validator.uuid_v4_Validator(req.params.user_id) &&validator.uuid_v4_Validator(req.params.friend_id) ){
+            const friendship:FriendShip={friend1_id:req.params.user_id,friend2_id:req.params.friend_id}
+            const friendShipResult:FriendShipResult=await friendmodel.delete(friendship)
+            if(friendShipResult.Error){
+                res.status(400).json(friendShipResult)
+            }
+            else{
+                res.status(200).json(friendShipResult)
+            }
+        }
+        else{
+            res.status(400).json({"Error": "This is Not Valid User ID Or Friend ID"})
+        }
 
     }
     catch(err){
-
+        res.status(400).json({"Error": "This is Not Valid User ID Or Friend ID"})
     }
 }
 
