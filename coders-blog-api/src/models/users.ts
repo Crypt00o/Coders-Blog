@@ -60,8 +60,9 @@ async delete(user_id:string):Promise<User>{
     try{
         const connection=await client.connect()
         
-        const deleteArticlesBelongsToUser=`DELETE FROM articles WHERE user_id=$1 ;`,sqlLine=`DELETE FROM users WHERE user_id=$1 RETURNING user_id , user_name , email , first_name , last_name;`
-        await connection.query(deleteArticlesBelongsToUser,[user_id])
+        const sqlLine=`DELETE FROM users WHERE user_id=$1 RETURNING user_id , user_name , email , first_name , last_name;`
+        await connection.query(`DELETE FROM articles WHERE user_id=$1 ;`,[user_id])
+        await connection.query(`DELETE FROM friends WHERE friend1_id=$1 OR friend2_id=$1 ;`,[user_id])
         const result = await connection.query(sqlLine,[user_id])
 
         connection.release()
