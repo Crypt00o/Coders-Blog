@@ -5,5 +5,6 @@ user_name VARCHAR(32) NOT NULL UNIQUE ,
 email VARCHAR(64) NOT NULL UNIQUE,
 password VARCHAR(128) NOT NULL,
 first_name VARCHAR(64) NOT NULL,
-last_name VARCHAR(64) NOT NULL
+last_name VARCHAR(64) NOT NULL,
+join_date DATE  NOT NULL DEFAULT now() 
 );
