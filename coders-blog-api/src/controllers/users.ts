@@ -100,6 +100,28 @@ const _delete= async(req:Request,res:Response):Promise<void>=>{
         
     }
 }
+
+const generalInfo= async(req:Request,res:Response):Promise<void>=>{
+    try{
+        if(validator.uuid_v4_Validator(req.params.user_id)){
+            const user:User=await userModel.generalInfo(req.params.user_id as string)
+            if(user.user_id){
+                res.status(200).json({"Coders Blog - User":user})     
+            }
+            else{
+                res.status(400).json({"Error": "This User Not Found "})
+            }
+        }
+        else {
+            res.status(400).json({"Error": "This is Not Valid User ID"})
+        }
+    }
+    catch(err){
+        res.status(400).json({"Error": "This User Not Found "})
+    }
+}
+
+
 const login= async(req:Request,res:Response):Promise<void>=>{
     try{
         const userValidate=validator.userLoginValidator(req.body.username as string , req.body.password as string )
@@ -123,4 +145,5 @@ const login= async(req:Request,res:Response):Promise<void>=>{
         
     }
 }
-export default {index,show,create,update,_delete,login}
+
+export default {index,show,create,update,_delete,login,generalInfo}
