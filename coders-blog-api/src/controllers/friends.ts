@@ -165,4 +165,4 @@ const getSendedRequests= async(req:Request,res:Response):Promise<void>=>{
     }
 }
 
-export {create,accept,refuse,_delete,getFriends,getRecievedRequests,getSendedRequests}
+export default {create,accept,refuse,_delete,getFriends,getRecievedRequests,getSendedRequests}
