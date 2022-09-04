@@ -1,6 +1,8 @@
 import {client} from "../database"
 import {User} from "../types/User"
 import {hashingPassword,isValidPassword} from "../utils/hashing"
+import {PoolClient} from "pg"
+
 class UsersModel{
    async index(totalUsersFetch:number,indexOffset:number):Promise<Array<User>>{
     try{
@@ -71,6 +73,18 @@ async delete(user_id:string):Promise<User>{
     catch(err){
     throw new Error(`[-] Error While Delete User : ${err}`)
     }   
+}
+
+async userValidator(connection :PoolClient,user_id:string):Promise<boolean>{
+
+    const checkUserAvailability=(await connection.query(`SELECT COUNT(user_id) AS user_validate FROM users WHERE user_id=$1;`,[user_id])).rows[0]
+
+if(checkUserAvailability.user_validate as number==0){
+    return false;
+}
+else{
+    return true;
+}
 }
 
 async generalInfo(user_id:string):Promise<User>{
