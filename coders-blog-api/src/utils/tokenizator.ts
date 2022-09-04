@@ -1,12 +1,13 @@
-import {JwtPayload, sign,verify} from "jsonwebtoken"
+import { sign,verify} from "jsonwebtoken"
 import { JWT_SECRET} from "../config"
+import {hashingUserIdAccess, isValidUserIdAccess} from "./hashing"
 const generateToken=(user_id:string):string=>{
-    return sign({user_id:user_id},JWT_SECRET as string)
+    return sign({access:hashingUserIdAccess(user_id)},JWT_SECRET as string)
 }
 const checkToken_id=(token:string,user_id:string):boolean=>{
-    const tokenDecoded :{user_id:string} =verify(token,JWT_SECRET as string) as {user_id:string}
-
-    if(tokenDecoded.user_id===user_id){
+    const tokenDecoded :{access:string} =verify(token,JWT_SECRET as string) as {access:string}
+    
+    if(isValidUserIdAccess(user_id,tokenDecoded.access)){
         return true;
     }
     else{
